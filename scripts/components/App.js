@@ -18,7 +18,6 @@ var base = Rebase.createClass({
 }, 'hotel-b9224');
 
 class App extends Component {
-
   constructor() {
     super();
 

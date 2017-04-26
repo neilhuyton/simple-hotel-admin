@@ -1,7 +1,3 @@
-/*
- Not Found
- */
-
 import React from 'react';
 
 class UnitTypesList extends React.Component {
@@ -9,7 +5,6 @@ class UnitTypesList extends React.Component {
     return (
       <div>
         <h1>Unit Types List</h1>
-
           <table>
             <tbody>
               {
@@ -19,7 +14,6 @@ class UnitTypesList extends React.Component {
               }
             </tbody>
           </table>
-
       </div>
     )
   }
