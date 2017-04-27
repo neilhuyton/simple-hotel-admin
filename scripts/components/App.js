@@ -1,12 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Link
-} from 'react-router-dom'
+} from 'react-router-dom';
+import autobind from 'autobind-decorator';
 
 import Home from './Home';
 import UnitTypesList from './UnitTypesList';
+import UnitTypeForm from './UnitTypeForm';
 
 // Firebase
 import Rebase  from 're-base';
@@ -17,12 +19,14 @@ var base = Rebase.createClass({
   databaseURL: "https://hotel-b9224.firebaseio.com",
 }, 'hotel-b9224');
 
+@autobind
 class App extends Component {
   constructor() {
     super();
 
     this.state = {
-      unitTypes: []
+      unitTypes: [],
+      unitType: {}
     }
   }
 
@@ -40,6 +44,23 @@ class App extends Component {
     });
   }
 
+  saveUnitType(unitType) {
+    if(unitType.id === null) {
+      const uuidV4 = require('uuid/v4');
+      unitType.id = uuidV4();
+      this.state.unitTypes.push(unitType);
+    }
+    else {
+      this.state.unitTypes.map((ut) => {
+        if(ut.id === unitType.id) {
+          this.state.unitType = ut;
+        }
+      })
+    }
+
+    this.setState({ unitTypes: this.state.unitTypes });
+  }
+
   render () {
     return (
       <Router>
@@ -52,6 +73,9 @@ class App extends Component {
 
           <Route exact path="/" component={Home}/>
           <Route path="/unit-types" component={() => (<UnitTypesList unitTypes={ this.state.unitTypes } />)} />
+          <Route path="/unit-type/:unitTypeId?"
+                 component={(route) => (<UnitTypeForm id={ route.match.params.unitTypeId } unitTypes={ this.state.unitTypes } saveUnitType={ this.saveUnitType } />)}
+          />
         </div>
       </Router>
     )

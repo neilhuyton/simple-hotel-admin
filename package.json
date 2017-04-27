@@ -6,7 +6,9 @@
   "author": "Neil <neil.huyton@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "autobind-decorator": "^1.4.0",
     "babel": "^6.23.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-env": "^1.4.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
@@ -27,8 +29,10 @@
     "react-dom": "^15.5.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "uuid": "^3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"
-  }
+  },
+  "devDependencies": {}
 }
