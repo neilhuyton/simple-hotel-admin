@@ -9,6 +9,8 @@ import autobind from 'autobind-decorator';
 import Home from './Home';
 import UnitTypesList from './UnitTypesList';
 import UnitTypeForm from './UnitTypeForm';
+import UnitsList from './UnitsList';
+import UnitForm from './UnitForm';
 
 // Firebase
 import Rebase  from 're-base';
@@ -26,8 +28,11 @@ class App extends Component {
 
     this.state = {
       unitTypes: [],
-      unitType: {}
+      unitType: {},
+      units: []
     }
+
+    this.uuidV4 = require('uuid/v4');
   }
 
   componentDidMount() {
@@ -37,17 +42,28 @@ class App extends Component {
       asArray: true
     });
 
+    base.syncState("units", {
+      context : this,
+      state : "units",
+      asArray: true
+    });
+
     base.bindToState("unitTypes", {
       context: this,
       state: "unitTypes",
+      asArray: true
+    });
+
+    base.syncState("units", {
+      context : this,
+      state : "units",
       asArray: true
     });
   }
 
   saveUnitType(unitType) {
     if(unitType.id === null) {
-      const uuidV4 = require('uuid/v4');
-      unitType.id = uuidV4();
+      unitType.id = this.uuidV4();
       this.state.unitTypes.push(unitType);
     }
     else {
@@ -61,6 +77,22 @@ class App extends Component {
     this.setState({ unitTypes: this.state.unitTypes });
   }
 
+  saveUnit(unit) {
+    if(unit.id === null) {
+      unit.id = this.uuidV4();
+      this.state.units.push(unit);
+    }
+    else {
+      this.state.units.map((u) => {
+        if(u.id === unit.id) {
+          this.state.unit = u;
+        }
+      })
+    }
+
+    this.setState({ units: this.state.units });
+  }
+
   render () {
     return (
       <Router>
@@ -69,12 +101,21 @@ class App extends Component {
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/unit-types">Unit Types</Link></li>
+            <li><Link to="/units">Units</Link></li>
           </ul>
 
           <Route exact path="/" component={Home}/>
           <Route path="/unit-types" component={() => (<UnitTypesList unitTypes={ this.state.unitTypes } />)} />
           <Route path="/unit-type/:unitTypeId?"
-                 component={(route) => (<UnitTypeForm id={ route.match.params.unitTypeId } unitTypes={ this.state.unitTypes } saveUnitType={ this.saveUnitType } />)}
+                 component={(route) => (<UnitTypeForm id={ route.match.params.unitTypeId }
+                                                      unitTypes={ this.state.unitTypes }
+                                                      saveUnitType={ this.saveUnitType } />)}
+          />
+          <Route path="/units" component={() => (<UnitsList units={ this.state.units } />)} />
+          <Route path="/unit/:unitId?"
+                 component={(route) => (<UnitForm id={ route.match.params.unitId }
+                                                      units={ this.state.units }
+                                                      saveUnit={ this.saveUnit } />)}
           />
         </div>
       </Router>

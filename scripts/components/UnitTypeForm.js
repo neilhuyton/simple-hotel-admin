@@ -43,7 +43,6 @@ class UnitTypeForm extends React.Component {
   }
 
   render() {
-    var linkState = this.props.linkState;
     return (
       <div>
         <h1>Unit Type Form</h1>
